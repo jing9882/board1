@@ -1,5 +1,6 @@
 package com.example.demo.board.controller;
  
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,13 +23,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.board.domain.BoardVO;
 import com.example.demo.board.domain.FileVO;
 import com.example.demo.board.service.BoardService;
- 
 
 @Controller
 public class BoardController {
  
-	@Value("${file.upload.directory}")
-	String uploadFileDir;
+	//@Value("${file.upload.directory}")
+	//String uploadFileDir;
 	
     @Resource(name="com.example.demo.board.service.BoardService")
     BoardService mBoardService;
@@ -75,11 +74,11 @@ public class BoardController {
             String fileNameExtension = FilenameUtils.getExtension(fileName).toLowerCase(); 
             File destinationFile; 
             String destinationFileName; 
-            //String fileUrl = "/Users/Documents/Workspace/MyProject/tistory/demo/src/main/webapp/WEB-INF/uploadFiles/"; 삭제
+            String fileUrl = "/Users/Documents/Workspace/MyProject/tistory/demo/src/main/webapp/WEB-INF/uploadFiles/";
             
             do { 
                 destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension; 
-                destinationFile = new File(uploadFileDir+ destinationFileName); 
+                destinationFile = new File(fileUrl+ destinationFileName); 
             } while (destinationFile.exists()); 
             
             destinationFile.getParentFile().mkdirs(); 
@@ -90,7 +89,7 @@ public class BoardController {
             file.setBno(board.getBno());
             file.setFileName(destinationFileName);
             file.setFileOriName(fileName);
-            file.setFileUrl(uploadFileDir);
+            file.setFileUrl(fileUrl);
             
             mBoardService.fileInsertService(file); //file insert
         }
